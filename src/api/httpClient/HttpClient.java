@@ -49,7 +49,7 @@ public class HttpClient {
 
 	// HTTP POST, PUT, DELETE request
 	protected void sendHttp(String url, HttpMethod method, HashMap<String, String> parameters,
-			HashMap<String, String> headers) throws MalformedURLException, IOException{
+			HashMap<String, String> headers) throws MalformedURLException, IOException {
 		URL obj = new URL(url);
 		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 		String methodType;
@@ -57,7 +57,7 @@ public class HttpClient {
 		// add request header
 		switch (method) {
 		case GET: {
-			throw new IllegalArgumentException("Can't yet handle ");
+			throw new IllegalArgumentException("Not a Valid HTTP method");
 		}
 		case POST: {
 			methodType = HttpMethod.POST.value;
@@ -72,12 +72,15 @@ public class HttpClient {
 			break;
 		}
 		default: { // added TOP_RIGHT but forgot about it?
-			throw new IllegalArgumentException("Can't yet handle ");
+			throw new IllegalArgumentException("Not a Valid HTTP method");
 
 		}
 		}
+		// add the method type
 		con.setRequestMethod(methodType);
+		// add a default user agent, can be overwritten
 		con.setRequestProperty("User-Agent", USER_AGENT);
+
 		if (!headers.isEmpty()) {
 			System.out.println("List of Headers");
 			for (HashMap.Entry<String, String> entry : headers.entrySet()) {

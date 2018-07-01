@@ -1,5 +1,7 @@
 package api.httpClient;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -16,14 +18,6 @@ public class HttpClientMain {
 		sc.nextLine();
 
 		String url;
-		String addHeader;
-		HashMap<String, String> headers;
-        
-		String addParameter;
-		HashMap<String, String> parameters;
-		
-		String key;
-		String value;
 		switch (option) {
 		case 1:
 			System.out.println("Enter the url for GET request");
@@ -31,104 +25,61 @@ public class HttpClientMain {
 			http.sendHttp(url);
 			break;
 		case 2:
-			System.out.println("Enter the url for POST request");
-			url = sc.nextLine();
-
-			System.out.println("Do you want to add a header? Enter 1 if yes");
-			addHeader = sc.nextLine();
-			headers = new HashMap<String, String>();
-			while (addHeader.equals("1")) {
-				System.out.println("Enter key");
-				key = sc.nextLine();
-				System.out.println("Enter value");
-				value = sc.nextLine();
-				headers.put(key, value);
-				System.out.println("Add another header? Enter 1 if yes");
-				addHeader = sc.nextLine();
-			}
-			
-			System.out.println("Do you want to add a parameter? Enter 1 if yes");
-			addParameter = sc.nextLine();
-			parameters = new HashMap<String, String>();
-			while (addParameter.equals("1")) {
-				System.out.println("Enter key");
-				key = sc.nextLine();
-				System.out.println("Enter value");
-				value = sc.nextLine();
-				parameters.put(key, value);
-				System.out.println("Add another header? Enter 1 if yes");
-				addParameter = sc.nextLine();
-			}
-
-			http.sendHttp(url, HttpMethod.POST, parameters, headers);
+			createRequest(HttpMethod.POST);
 			break;
 		case 3:
-			System.out.println("Enter the url for PUT request");
-			url = sc.nextLine();
-
-			System.out.println("Do you want to add a header? Enter 1 if yes");
-			addHeader = sc.nextLine();
-			headers = new HashMap<String, String>();
-			while (addHeader.equals("1")) {
-				System.out.println("Enter key");
-				key = sc.nextLine();
-				System.out.println("Enter value");
-				value = sc.nextLine();
-				headers.put(key, value);
-				System.out.println("Add another header? Enter 1 if yes");
-				addHeader = sc.nextLine();
-			}
-			
-			System.out.println("Do you want to add a parameter? Enter 1 if yes");
-			addParameter = sc.nextLine();
-			parameters = new HashMap<String, String>();
-			while (addParameter.equals("1")) {
-				System.out.println("Enter key");
-				key = sc.nextLine();
-				System.out.println("Enter value");
-				value = sc.nextLine();
-				parameters.put(key, value);
-				System.out.println("Add another header? Enter 1 if yes");
-				addParameter = sc.nextLine();
-			}
-
-			http.sendHttp(url, HttpMethod.PUT, parameters, headers);
+			createRequest(HttpMethod.PUT);
 			break;
 		case 4:
-			System.out.println("Enter the url for DELETE request");
-			url = sc.nextLine();
-
-			System.out.println("Do you want to add a header? Enter 1 if yes");
-			addHeader = sc.nextLine();
-			headers = new HashMap<String, String>();
-			while (addHeader.equals("1")) {
-				System.out.println("Enter key");
-				key = sc.nextLine();
-				System.out.println("Enter value");
-				value = sc.nextLine();
-				headers.put(key, value);
-				System.out.println("Add another header? Enter 1 if yes");
-				addHeader = sc.nextLine();
-			}
-			
-			System.out.println("Do you want to add a parameter? Enter 1 if yes");
-			addParameter = sc.nextLine();
-			parameters = new HashMap<String, String>();
-			while (addParameter.equals("1")) {
-				System.out.println("Enter key");
-				key = sc.nextLine();
-				System.out.println("Enter value");
-				value = sc.nextLine();
-				parameters.put(key, value);
-				System.out.println("Add another header? Enter 1 if yes");
-				addParameter = sc.nextLine();
-			}
-
-			http.sendHttp(url, HttpMethod.DELETE, parameters, headers);
+			createRequest(HttpMethod.DELETE);
 			break;
 		default:
 			System.out.println("Incorrect option");
 		}
 		sc.close();
+	}
+
+	static void createRequest(HttpMethod method) throws MalformedURLException, IOException {
+		Scanner sc = new Scanner(System.in);
+		String url;
+
+		System.out.println("Enter the url for " + method.value + " request");
+		url = sc.nextLine();
+		String addHeader;
+		HashMap<String, String> headers;
+
+		String addParameter;
+		HashMap<String, String> parameters;
+
+		String key;
+		String value;
+		System.out.println("Do you want to add a header? Enter 1 if yes");
+		addHeader = sc.nextLine();
+		headers = new HashMap<String, String>();
+		while (addHeader.equals("1")) {
+			System.out.println("Enter key");
+			key = sc.nextLine();
+			System.out.println("Enter value");
+			value = sc.nextLine();
+			headers.put(key, value);
+			System.out.println("Add another header? Enter 1 if yes");
+			addHeader = sc.nextLine();
+		}
+
+		System.out.println("Do you want to add a parameter? Enter 1 if yes");
+		addParameter = sc.nextLine();
+		parameters = new HashMap<String, String>();
+		while (addParameter.equals("1")) {
+			System.out.println("Enter key");
+			key = sc.nextLine();
+			System.out.println("Enter value");
+			value = sc.nextLine();
+			parameters.put(key, value);
+			System.out.println("Add another parameter? Enter 1 if yes");
+			addParameter = sc.nextLine();
+		}
+		sc.close();
+		HttpClient http = new HttpClient();
+		http.sendHttp(url, method, parameters, headers);
 	}
 }
