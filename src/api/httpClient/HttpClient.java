@@ -9,13 +9,28 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.StringJoiner;
-
 import javax.net.ssl.HttpsURLConnection;
 
 public class HttpClient {
 
 	protected final String USER_AGENT = "Mozilla/5.0";
-	StringJoiner urlParameters;
+	protected StringJoiner urlParameters;
+	private HashMap<String, String> parameters;
+	private HashMap<String, String> headers;
+
+	public HttpClient() {
+		this.parameters = new HashMap<>();
+		this.headers = new HashMap<>();
+	}
+    
+	// add Headers method
+	public void addHeader(String key, String value) {
+		headers.put(key, value);
+	}
+    // add Parameters method
+	public void addParameter(String key, String value) {
+		parameters.put(key, value);
+	}
 
 	// HTTP GET request
 	protected void sendHttp(String url) throws Exception {
@@ -48,8 +63,7 @@ public class HttpClient {
 	}
 
 	// HTTP POST, PUT, DELETE request
-	protected void sendHttp(String url, HttpMethod method, HashMap<String, String> parameters,
-			HashMap<String, String> headers) throws MalformedURLException, IOException {
+	protected void sendHttp(String url, HttpMethod method) throws MalformedURLException, IOException {
 		URL obj = new URL(url);
 		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 		String methodType;
