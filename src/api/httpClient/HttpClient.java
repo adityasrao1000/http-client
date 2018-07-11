@@ -66,32 +66,14 @@ public class HttpClient {
 	protected void sendHttp(String url, HttpMethod method) throws MalformedURLException, IOException {
 		URL obj = new URL(url);
 		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-		String methodType;
 
-		// add request header
-		switch (method) {
-		case GET: {
+		
+		if(method.value == "GET") {
 			throw new IllegalArgumentException("Not a Valid HTTP method");
 		}
-		case POST: {
-			methodType = HttpMethod.POST.value;
-			break;
-		}
-		case PUT: {
-			methodType = HttpMethod.PUT.value;
-			break;
-		}
-		case DELETE: {
-			methodType = HttpMethod.DELETE.value;
-			break;
-		}
-		default: { // added TOP_RIGHT but forgot about it?
-			throw new IllegalArgumentException("Not a Valid HTTP method");
-
-		}
-		}
+		
 		// add the method type
-		con.setRequestMethod(methodType);
+		con.setRequestMethod(method.value);
 		// add a default user agent, can be overwritten
 		con.setRequestProperty("User-Agent", USER_AGENT);
 
@@ -120,7 +102,7 @@ public class HttpClient {
 		}
 
 		int responseCode = con.getResponseCode();
-		System.out.println("\nSending '" + methodType + "' request to URL : " + url);
+		System.out.println("\nSending '" + method.value + "' request to URL : " + url);
 		if (urlParameters != null) {
 			System.out.println("Post parameters : " + urlParameters);
 		}
